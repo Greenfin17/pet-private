@@ -218,7 +218,73 @@ const printToDom = (divID, textToPrint)  => {
 }
 
 const petBuilder = (pet) => {
-  let domStrin = '';
+  let domString = '';
   let i = 0;
   for(let item of pet) {
-    domString += `
+  domString += `<div class="card my-2" style="width: 18rem;" id=${i}>
+        <div class="card-body">
+        <p class="card-text">${item.name}</p>
+        <div class="img-container" style="background-image: url('${item.imageUrl}');"></div>
+        <p class="card-text">${item.color}</p>
+        <p class="card-text">${item.specialSkill}</p>
+        <p class="card-text">${item.typeOfPet}</p>
+      </div>
+      </div>`; 
+      i++;
+  };
+   printToDom('#pets', domString);
+}
+
+petBuilder(pets);
+
+const handleButtonClick = (e) => {
+  const buttonId = e.target.id;
+
+  if(buttonId === 'all') {
+    //DARK MODE
+    document.querySelector('body').style.backgroundColor = '#000';
+  } else if (buttonId === 'dog') {
+    //LIGHT MODE
+    document.querySelector('body').style.backgroundColor = '#fff';
+  } else if (buttonId === 'cat') {
+    //MEDIUM
+    document.querySelector('body').style.backgroundColor = '#303030';
+  } else if (buttonId === 'dino') {
+    //DEFAULT
+    document.querySelector('body').style.backgroundColor = 'rgb(175, 196, 175)';
+  }
+  const selectedPets = [];
+  for(let i = 0; i  < pets.length; i++) {
+    if(pets[i].typeOfPet === buttonId) {
+      console.log(pets[i].typeOfPet);
+      selectedPets.push(pets[i]);
+    }
+    if(buttonId === 'all') {
+      filtered = false;
+      petBuilder(pets);
+    } else {
+      filtered = true;
+      petBuilder(selectedPets);
+    }
+  }
+}
+// C in "CRUD" Create
+const buttonEvents = () => {
+  document.querySelector('#all').addEventListener('click', handleButtonClick);
+  document.querySelector('#dog').addEventListener('click', handleButtonClick);
+  document.querySelector('#cat').addEventListener('click', handleButtonClick );
+  document.querySelector('#dino').addEventListener('click', handleButtonClick );
+  //Target delete button
+  //document.querySelector('#pets').addEventListener('click', deletePet);
+
+  //document.querySelector('form').addEventListener('submit', getFormInfo);
+
+} 
+
+const init = () => {
+  buttonEvents();
+  petBuilder(pets);
+
+}
+
+init();
